@@ -46,32 +46,116 @@ const STATS = [
 
 const WORLD_DISHES_ROW1 = [
   { name: "Sushi", origin: "Japan", photo: "photo-1611143669185-af224c5e3252" },
-  { name: "Margherita Pizza", origin: "Italy", photo: "photo-1574071318508-1cdbab80d002" },
-  { name: "Tacos al Pastor", origin: "Mexico", photo: "photo-1565299585323-38d6b0865b47" },
-  { name: "Butter Chicken", origin: "India", photo: "photo-1585937421612-70a008356fbe" },
-  { name: "Pad Thai", origin: "Thailand", photo: "photo-1559314809-0d155014e29e" },
-  { name: "Croissant", origin: "France", photo: "photo-1555507036-ab1f4038808a" },
+  {
+    name: "Margherita Pizza",
+    origin: "Italy",
+    photo: "photo-1574071318508-1cdbab80d002",
+  },
+  {
+    name: "Tacos al Pastor",
+    origin: "Mexico",
+    photo: "photo-1565299585323-38d6b0865b47",
+  },
+  {
+    name: "Butter Chicken",
+    origin: "India",
+    photo: "photo-1585937421612-70a008356fbe",
+  },
+  {
+    name: "Pad Thai",
+    origin: "Thailand",
+    photo: "photo-1559314809-0d155014e29e",
+  },
+  {
+    name: "Croissant",
+    origin: "France",
+    photo: "photo-1555507036-ab1f4038808a",
+  },
   { name: "Ramen", origin: "Japan", photo: "photo-1569718212165-3a8278d5f624" },
-  { name: "Jollof Rice", origin: "Nigeria", photo: "photo-1604329760661-e71dc83f8f26" },
+  {
+    name: "Jollof Rice",
+    origin: "Nigeria",
+    photo: "photo-1604329760661-e71dc83f8f26",
+  },
   { name: "Dim Sum", origin: "China", photo: "photo-1563245372-f21724e3856d" },
-  { name: "Lamb Tagine", origin: "Morocco", photo: "photo-1528137871618-79d2761e3fd5" },
-  { name: "Risotto", origin: "Italy", photo: "photo-1476124369491-e7addf5db371" },
-  { name: "Doro Wat", origin: "Ethiopia", photo: "photo-1567364816519-cbc7c4a7d3d0" },
+  {
+    name: "Lamb Tagine",
+    origin: "Morocco",
+    photo: "photo-1528137871618-79d2761e3fd5",
+  },
+  {
+    name: "Risotto",
+    origin: "Italy",
+    photo: "photo-1476124369491-e7addf5db371",
+  },
+  {
+    name: "Doro Wat",
+    origin: "Ethiopia",
+    photo: "photo-1567364816519-cbc7c4a7d3d0",
+  },
 ];
 
 const WORLD_DISHES_ROW2 = [
-  { name: "Biryani", origin: "India", photo: "photo-1563379091339-03b21ab4a4f8" },
-  { name: "Green Curry", origin: "Thailand", photo: "photo-1455619452474-d2be8b1e70cd" },
-  { name: "Enchiladas", origin: "Mexico", photo: "photo-1534352956036-cd81e27dd615" },
-  { name: "Fufu & Soup", origin: "Ghana", photo: "photo-1546069901-ba9599a7e63c" },
-  { name: "Coq au Vin", origin: "France", photo: "photo-1414235077428-338989a2e8c0" },
-  { name: "Peking Duck", origin: "China", photo: "photo-1582878826629-29b7ad1cdc43" },
-  { name: "Hummus", origin: "Lebanon", photo: "photo-1540189549336-e6e99c3679fe" },
-  { name: "Braai", origin: "South Africa", photo: "photo-1558618666-fcd25c85cd64" },
-  { name: "Spaghetti Carbonara", origin: "Italy", photo: "photo-1555396273-367ea4eb4db5" },
-  { name: "Tom Yum", origin: "Thailand", photo: "photo-1569050467447-ce54b3bbc37d" },
-  { name: "Kelewele", origin: "Ghana", photo: "photo-1604329760661-e71dc83f8f26" },
-  { name: "Crème Brûlée", origin: "France", photo: "photo-1470124182917-cc6e71b22ecc" },
+  {
+    name: "Biryani",
+    origin: "India",
+    photo: "photo-1563379091339-03b21ab4a4f8",
+  },
+  {
+    name: "Green Curry",
+    origin: "Thailand",
+    photo: "photo-1455619452474-d2be8b1e70cd",
+  },
+  {
+    name: "Enchiladas",
+    origin: "Mexico",
+    photo: "photo-1534352956036-cd81e27dd615",
+  },
+  {
+    name: "Fufu & Soup",
+    origin: "Ghana",
+    photo: "photo-1546069901-ba9599a7e63c",
+  },
+  {
+    name: "Coq au Vin",
+    origin: "France",
+    photo: "photo-1414235077428-338989a2e8c0",
+  },
+  {
+    name: "Peking Duck",
+    origin: "China",
+    photo: "photo-1582878826629-29b7ad1cdc43",
+  },
+  {
+    name: "Hummus",
+    origin: "Lebanon",
+    photo: "photo-1540189549336-e6e99c3679fe",
+  },
+  {
+    name: "Braai",
+    origin: "South Africa",
+    photo: "photo-1558618666-fcd25c85cd64",
+  },
+  {
+    name: "Spaghetti Carbonara",
+    origin: "Italy",
+    photo: "photo-1555396273-367ea4eb4db5",
+  },
+  {
+    name: "Tom Yum",
+    origin: "Thailand",
+    photo: "photo-1569050467447-ce54b3bbc37d",
+  },
+  {
+    name: "Kelewele",
+    origin: "Ghana",
+    photo: "photo-1604329760661-e71dc83f8f26",
+  },
+  {
+    name: "Crème Brûlée",
+    origin: "France",
+    photo: "photo-1470124182917-cc6e71b22ecc",
+  },
 ];
 
 export default function Home() {
@@ -79,12 +163,30 @@ export default function Home() {
 
   const fadeUp = (delay = 0) =>
     prefersReducedMotion
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.3, delay } }
-      : { initial: { opacity: 0, y: 40 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay, ease: "easeOut" } };
+      ? {
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          transition: { duration: 0.3, delay },
+        }
+      : {
+          initial: { opacity: 0, y: 40 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay, ease: "easeOut" },
+        };
 
   const sectionFade = prefersReducedMotion
-    ? { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true }, transition: { duration: 0.4 } }
-    : { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5, ease: "easeOut" } };
+    ? {
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
+        transition: { duration: 0.4 },
+      }
+    : {
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, ease: "easeOut" },
+      };
 
   return (
     <main className="relative">
@@ -95,9 +197,7 @@ export default function Home() {
           className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[480px] w-[480px] rounded-full bg-primary/25 blur-3xl"
           aria-hidden
           animate={
-            prefersReducedMotion
-              ? {}
-              : { x: [0, 40, 0], y: [0, -24, 0] }
+            prefersReducedMotion ? {} : { x: [0, 40, 0], y: [0, -24, 0] }
           }
           transition={{ duration: 12, ease: "easeInOut", repeat: Infinity }}
         />
@@ -169,10 +269,7 @@ export default function Home() {
       {/* ── Features ─────────────────────────────────────────────────────── */}
       <section className="relative px-4 pb-28 sm:px-6">
         <div className="mx-auto max-w-5xl">
-          <motion.div
-            {...sectionFade}
-            className="text-center mb-12"
-          >
+          <motion.div {...sectionFade} className="text-center mb-12">
             <h2 className="font-heading text-3xl font-semibold">
               Everything food, in one place
             </h2>
@@ -186,8 +283,16 @@ export default function Home() {
             {FEATURES.map((feat, i) => (
               <motion.div
                 key={feat.to}
-                initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 32, rotate: -1 }}
-                whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, rotate: 0 }}
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: 32, rotate: -1 }
+                }
+                whileInView={
+                  prefersReducedMotion
+                    ? { opacity: 1 }
+                    : { opacity: 1, y: 0, rotate: 0 }
+                }
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.12, ease: "easeOut" }}
               >
@@ -201,14 +306,18 @@ export default function Home() {
                     <Icon icon={feat.icon} width={22} />
                   </div>
                   <div>
-                    <h3 className={`font-heading font-semibold text-base group-hover:${feat.color} transition-colors`}>
+                    <h3
+                      className={`font-heading font-semibold text-base group-hover:${feat.color} transition-colors`}
+                    >
                       {feat.title}
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                       {feat.description}
                     </p>
                   </div>
-                  <div className={`mt-auto flex items-center gap-1 text-xs font-medium ${feat.color}`}>
+                  <div
+                    className={`mt-auto flex items-center gap-1 text-xs font-medium ${feat.color}`}
+                  >
                     Get started
                     <Icon icon="ph:arrow-right" width={13} />
                   </div>
@@ -231,50 +340,70 @@ export default function Home() {
         </motion.div>
 
         {/* Row 1 — scrolls left */}
-        <div className={`${prefersReducedMotion ? "overflow-x-auto" : "overflow-hidden"} mb-4`}>
-          <div className={`flex ${prefersReducedMotion ? "" : "animate-marquee"}`}>
-            {(prefersReducedMotion ? WORLD_DISHES_ROW1 : [...WORLD_DISHES_ROW1, ...WORLD_DISHES_ROW1]).map(
-              (dish, i) => (
-                <div key={i} className="flex-shrink-0 pr-4">
-                  <div className="relative h-48 w-64 rounded-2xl overflow-hidden">
-                    <img
-                      src={`https://images.unsplash.com/${dish.photo}?w=400&h=300&fit=crop&auto=format&q=80`}
-                      alt={dish.name}
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-sm font-semibold text-white leading-tight">{dish.name}</p>
-                      <p className="text-xs text-white/60 mt-0.5">{dish.origin}</p>
-                    </div>
+        <div
+          className={`${prefersReducedMotion ? "overflow-x-auto" : "overflow-hidden"} mb-4`}
+        >
+          <div
+            className={`flex ${prefersReducedMotion ? "" : "animate-marquee"}`}
+          >
+            {(prefersReducedMotion
+              ? WORLD_DISHES_ROW1
+              : [...WORLD_DISHES_ROW1, ...WORLD_DISHES_ROW1]
+            ).map((dish, i) => (
+              <div key={i} className="flex-shrink-0 pr-4">
+                <div className="relative h-48 w-64 rounded-2xl overflow-hidden">
+                  <img
+                    src={`https://images.unsplash.com/${dish.photo}?w=400&h=300&fit=crop&auto=format&q=80`}
+                    alt={dish.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-sm font-semibold text-white leading-tight">
+                      {dish.name}
+                    </p>
+                    <p className="text-xs text-white/60 mt-0.5">
+                      {dish.origin}
+                    </p>
                   </div>
                 </div>
-              )
-            )}
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Row 2 — scrolls right */}
-        <div className={prefersReducedMotion ? "overflow-x-auto" : "overflow-hidden"}>
-          <div className={`flex ${prefersReducedMotion ? "" : "animate-marquee-reverse"}`}>
-            {(prefersReducedMotion ? WORLD_DISHES_ROW2 : [...WORLD_DISHES_ROW2, ...WORLD_DISHES_ROW2]).map(
-              (dish, i) => (
-                <div key={i} className="flex-shrink-0 pr-4">
-                  <div className="relative h-48 w-64 rounded-2xl overflow-hidden">
-                    <img
-                      src={`https://images.unsplash.com/${dish.photo}?w=400&h=300&fit=crop&auto=format&q=80`}
-                      alt={dish.name}
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-sm font-semibold text-white leading-tight">{dish.name}</p>
-                      <p className="text-xs text-white/60 mt-0.5">{dish.origin}</p>
-                    </div>
+        <div
+          className={
+            prefersReducedMotion ? "overflow-x-auto" : "overflow-hidden"
+          }
+        >
+          <div
+            className={`flex ${prefersReducedMotion ? "" : "animate-marquee-reverse"}`}
+          >
+            {(prefersReducedMotion
+              ? WORLD_DISHES_ROW2
+              : [...WORLD_DISHES_ROW2, ...WORLD_DISHES_ROW2]
+            ).map((dish, i) => (
+              <div key={i} className="flex-shrink-0 pr-4">
+                <div className="relative h-48 w-64 rounded-2xl overflow-hidden">
+                  <img
+                    src={`https://images.unsplash.com/${dish.photo}?w=400&h=300&fit=crop&auto=format&q=80`}
+                    alt={dish.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-sm font-semibold text-white leading-tight">
+                      {dish.name}
+                    </p>
+                    <p className="text-xs text-white/60 mt-0.5">
+                      {dish.origin}
+                    </p>
                   </div>
                 </div>
-              )
-            )}
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -36,9 +36,13 @@ export default function RecipeChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem(LS_KEY) ?? "");
+  const [apiKey, setApiKey] = useState(
+    () => localStorage.getItem(LS_KEY) ?? "",
+  );
   const [keyDraft, setKeyDraft] = useState("");
-  const [showKeyInput, setShowKeyInput] = useState(!localStorage.getItem(LS_KEY));
+  const [showKeyInput, setShowKeyInput] = useState(
+    !localStorage.getItem(LS_KEY),
+  );
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -112,16 +116,18 @@ export default function RecipeChat() {
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(
-          (err as { error?: { message?: string } }).error?.message ?? `HTTP ${res.status}`,
+          (err as { error?: { message?: string } }).error?.message ??
+            `HTTP ${res.status}`,
         );
       }
 
-      const data = await res.json() as {
+      const data = (await res.json()) as {
         candidates?: { content?: { parts?: { text?: string }[] } }[];
       };
 
       const replyText =
-        data.candidates?.[0]?.content?.parts?.[0]?.text ?? "Sorry, I couldn't generate a response.";
+        data.candidates?.[0]?.content?.parts?.[0]?.text ??
+        "Sorry, I couldn't generate a response.";
 
       const modelMsg: Message = {
         id: crypto.randomUUID(),
@@ -155,7 +161,6 @@ export default function RecipeChat() {
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 65px)" }}>
-
       {/* ── API key setup banner ── */}
       <AnimatePresence>
         {showKeyInput && (
@@ -171,7 +176,9 @@ export default function RecipeChat() {
                   <Icon icon="ph:key" width={18} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">Google Gemini API key required</p>
+                  <p className="text-sm font-medium">
+                    Google Gemini API key required
+                  </p>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     Your key is stored only in your browser.{" "}
                     <a
@@ -211,7 +218,6 @@ export default function RecipeChat() {
       {/* ── Chat area ── */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         <div className="mx-auto max-w-2xl flex flex-col gap-4">
-
           {/* Empty state */}
           {!hasMessages && (
             <motion.div
@@ -220,15 +226,25 @@ export default function RecipeChat() {
               className="flex flex-col items-center text-center gap-6 py-16"
             >
               <div className="relative">
-                <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-40 w-40 rounded-full bg-primary/20 blur-3xl" aria-hidden />
+                <div
+                  className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-40 w-40 rounded-full bg-primary/20 blur-3xl"
+                  aria-hidden
+                />
                 <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card shadow-[0_0_0_4px_hsl(var(--primary)/0.08)]">
-                  <Icon icon="ph:chef-hat" className="text-primary" width={32} />
+                  <Icon
+                    icon="ph:chef-hat"
+                    className="text-primary"
+                    width={32}
+                  />
                 </div>
               </div>
               <div>
-                <h2 className="font-heading text-2xl font-semibold">Meet Ember</h2>
+                <h2 className="font-heading text-2xl font-semibold">
+                  Meet Ember
+                </h2>
                 <p className="mt-2 text-sm text-muted-foreground max-w-xs">
-                  Your AI culinary guide. Ask me for recipes, cooking tips, or food inspiration from around the world.
+                  Your AI culinary guide. Ask me for recipes, cooking tips, or
+                  food inspiration from around the world.
                 </p>
               </div>
 
@@ -331,7 +347,11 @@ export default function RecipeChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={apiKey ? "Ask Ember anything about food…" : "Add your API key to start chatting"}
+              placeholder={
+                apiKey
+                  ? "Ask Ember anything about food…"
+                  : "Add your API key to start chatting"
+              }
               disabled={!apiKey || loading}
               className="flex-1 resize-none rounded-xl border border-border bg-card px-4 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50 max-h-32 overflow-y-auto"
               style={{ minHeight: "42px" }}

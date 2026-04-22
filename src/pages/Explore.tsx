@@ -19,12 +19,36 @@ const REGION_LABELS: Record<string, string> = {
 // ─── Chef tips ────────────────────────────────────────────────────────────────
 
 const FOOD_TIPS = [
-  { icon: "ph:thermometer", title: "Rest your meat", body: "Always let cooked meat rest for 5–10 minutes so juices redistribute throughout the cut." },
-  { icon: "ph:waves", title: "Salt pasta water", body: "Pasta water should taste like the sea. Properly salted water flavours the pasta from the inside out." },
-  { icon: "ph:flame", title: "Hot pan, then oil", body: "Preheat your pan before adding oil to prevent sticking and get a better sear." },
-  { icon: "ph:bowl-food", title: "Mise en place", body: "Prep everything before you cook. Organised ingredients make the cooking process smoother and more enjoyable." },
-  { icon: "ph:drop", title: "Finish with acid", body: "A squeeze of lemon or splash of vinegar at the end brightens any dish and balances richness." },
-  { icon: "ph:stack", title: "Season in layers", body: "Add seasoning at each stage of cooking, not just at the end, for deeper, more complex flavour." },
+  {
+    icon: "ph:thermometer",
+    title: "Rest your meat",
+    body: "Always let cooked meat rest for 5–10 minutes so juices redistribute throughout the cut.",
+  },
+  {
+    icon: "ph:waves",
+    title: "Salt pasta water",
+    body: "Pasta water should taste like the sea. Properly salted water flavours the pasta from the inside out.",
+  },
+  {
+    icon: "ph:flame",
+    title: "Hot pan, then oil",
+    body: "Preheat your pan before adding oil to prevent sticking and get a better sear.",
+  },
+  {
+    icon: "ph:bowl-food",
+    title: "Mise en place",
+    body: "Prep everything before you cook. Organised ingredients make the cooking process smoother and more enjoyable.",
+  },
+  {
+    icon: "ph:drop",
+    title: "Finish with acid",
+    body: "A squeeze of lemon or splash of vinegar at the end brightens any dish and balances richness.",
+  },
+  {
+    icon: "ph:stack",
+    title: "Season in layers",
+    body: "Add seasoning at each stage of cooking, not just at the end, for deeper, more complex flavour.",
+  },
 ];
 
 // ─── Explore page ─────────────────────────────────────────────────────────────
@@ -35,8 +59,16 @@ export default function Explore() {
 
   const fadeUp = (delay = 0) =>
     prefersReducedMotion
-      ? { initial: { opacity: 0 }, whileInView: { opacity: 1 }, transition: { duration: 0.3, delay } }
-      : { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay } };
+      ? {
+          initial: { opacity: 0 },
+          whileInView: { opacity: 1 },
+          transition: { duration: 0.3, delay },
+        }
+      : {
+          initial: { opacity: 0, y: 32 },
+          whileInView: { opacity: 1, y: 0 },
+          transition: { duration: 0.5, delay },
+        };
 
   const trimmed = query.trim().toLowerCase();
 
@@ -46,15 +78,20 @@ export default function Explore() {
           c.name.toLowerCase().includes(trimmed) ||
           c.region.toLowerCase().includes(trimmed) ||
           c.description.toLowerCase().includes(trimmed) ||
-          c.dishes.some((d) => d.name.toLowerCase().includes(trimmed) || d.tags.some((t) => t.includes(trimmed)))
+          c.dishes.some(
+            (d) =>
+              d.name.toLowerCase().includes(trimmed) ||
+              d.tags.some((t) => t.includes(trimmed)),
+          ),
       )
     : CUISINES;
 
-  const regions = trimmed ? null : REGION_ORDER.filter((r) => CUISINES.some((c) => c.region === r));
+  const regions = trimmed
+    ? null
+    : REGION_ORDER.filter((r) => CUISINES.some((c) => c.region === r));
 
   return (
     <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6">
-
       {/* ── Hero ── */}
       <section className="mb-10 text-center">
         <motion.div
@@ -81,7 +118,8 @@ export default function Explore() {
           viewport={{ once: true }}
           className="mt-4 text-sm text-muted-foreground max-w-md mx-auto"
         >
-          Discover cuisines from every corner of the globe. Click any cuisine to explore its signature dishes.
+          Discover cuisines from every corner of the globe. Click any cuisine to
+          explore its signature dishes.
         </motion.p>
       </section>
 
@@ -136,8 +174,14 @@ export default function Explore() {
         <section className="mb-20">
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-4 py-20 text-center">
-              <Icon icon="ph:fork-knife" width={40} className="text-muted-foreground/40" />
-              <p className="text-sm text-muted-foreground">No cuisines matched your search.</p>
+              <Icon
+                icon="ph:fork-knife"
+                width={40}
+                className="text-muted-foreground/40"
+              />
+              <p className="text-sm text-muted-foreground">
+                No cuisines matched your search.
+              </p>
               <Link
                 to="/find"
                 className="text-sm font-medium text-rose-400 hover:text-rose-300 underline underline-offset-2"
@@ -148,7 +192,12 @@ export default function Explore() {
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {filtered.map((cuisine, i) => (
-                <CuisineCard key={cuisine.slug} cuisine={cuisine} delay={i * 0.04} reduced={!!prefersReducedMotion} />
+                <CuisineCard
+                  key={cuisine.slug}
+                  cuisine={cuisine}
+                  delay={i * 0.04}
+                  reduced={!!prefersReducedMotion}
+                />
               ))}
             </div>
           )}
@@ -160,8 +209,14 @@ export default function Explore() {
             return (
               <section key={region} className="mb-16">
                 <motion.h2
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-                  whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  initial={
+                    prefersReducedMotion
+                      ? { opacity: 0 }
+                      : { opacity: 0, y: 20 }
+                  }
+                  whileInView={
+                    prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
+                  }
                   viewport={{ once: true }}
                   transition={{ duration: 0.4 }}
                   className="mb-5 font-heading text-xl font-semibold"
@@ -170,7 +225,12 @@ export default function Explore() {
                 </motion.h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   {group.map((cuisine, i) => (
-                    <CuisineCard key={cuisine.slug} cuisine={cuisine} delay={i * 0.06} reduced={!!prefersReducedMotion} />
+                    <CuisineCard
+                      key={cuisine.slug}
+                      cuisine={cuisine}
+                      delay={i * 0.06}
+                      reduced={!!prefersReducedMotion}
+                    />
                   ))}
                 </div>
               </section>
@@ -182,8 +242,12 @@ export default function Explore() {
       {/* ── Chef's Tips ── */}
       <section>
         <motion.h2
-          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          initial={
+            prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }
+          }
+          whileInView={
+            prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
+          }
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
           className="mb-2 font-heading text-xl font-semibold"
@@ -204,8 +268,12 @@ export default function Explore() {
           {FOOD_TIPS.map((tip, i) => (
             <motion.div
               key={tip.title}
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-              whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              initial={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }
+              }
+              whileInView={
+                prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
+              }
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
               className="rounded-2xl border border-border bg-card p-5 flex gap-4"
@@ -214,14 +282,17 @@ export default function Explore() {
                 <Icon icon={tip.icon} width={20} />
               </div>
               <div>
-                <p className="font-heading text-sm font-semibold mb-1">{tip.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{tip.body}</p>
+                <p className="font-heading text-sm font-semibold mb-1">
+                  {tip.title}
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {tip.body}
+                </p>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
-
     </main>
   );
 }
@@ -252,15 +323,21 @@ function CuisineCard({
           src={`https://images.unsplash.com/${cuisine.photo}?w=400&h=220&fit=crop&auto=format&q=80`}
           alt={cuisine.name}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).style.display = "none";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
         <div className="relative mt-auto p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xl">{cuisine.emoji}</span>
-            <span className="font-heading text-base font-semibold text-white">{cuisine.name}</span>
+            <span className="font-heading text-base font-semibold text-white">
+              {cuisine.name}
+            </span>
           </div>
-          <p className="text-xs text-white/70 leading-relaxed line-clamp-2">{cuisine.description}</p>
+          <p className="text-xs text-white/70 leading-relaxed line-clamp-2">
+            {cuisine.description}
+          </p>
         </div>
         <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-xs text-white/80 opacity-0 group-hover:opacity-100 transition-opacity">
           <Icon icon="ph:arrow-right" width={12} />

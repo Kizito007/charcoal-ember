@@ -20,7 +20,12 @@ type Status = "idle" | "locating" | "fetching" | "done" | "error";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function haversine(lat1: number, lon1: number, lat2: number, lon2: number): number {
+function haversine(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number {
   const R = 6371000;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -194,7 +199,9 @@ export default function FindEateries() {
   const [status, setStatus] = useState<Status>("idle");
   const [eateries, setEateries] = useState<Eatery[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
-  const [userLoc, setUserLoc] = useState<{ lat: number; lon: number } | null>(null);
+  const [userLoc, setUserLoc] = useState<{ lat: number; lon: number } | null>(
+    null,
+  );
   const [radius, setRadius] = useState(1000);
   const [filter, setFilter] = useState("all");
 
@@ -269,7 +276,10 @@ export default function FindEateries() {
           ? rawCuisine.split(";")[0].replace(/_/g, " ")
           : undefined;
 
-        const addrParts = [tags["addr:housenumber"], tags["addr:street"]].filter(Boolean);
+        const addrParts = [
+          tags["addr:housenumber"],
+          tags["addr:street"],
+        ].filter(Boolean);
 
         results.push({
           id: el.id,
@@ -298,21 +308,23 @@ export default function FindEateries() {
   void userLoc;
 
   const types = ["all", ...Array.from(new Set(eateries.map((e) => e.type)))];
-  const filtered = filter === "all" ? eateries : eateries.filter((e) => e.type === filter);
+  const filtered =
+    filter === "all" ? eateries : eateries.filter((e) => e.type === filter);
   const busy = status === "locating" || status === "fetching";
 
   return (
     <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6">
-
       {/* ── Page title (shown when idle or done) ── */}
       {(status === "idle" || status === "done") && (
         <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-heading text-2xl font-semibold">Find Eateries</h1>
+            <h1 className="font-heading text-2xl font-semibold">
+              Find Eateries
+            </h1>
             {status === "done" && (
               <p className="mt-1 text-sm text-muted-foreground">
-                {eateries.length} place{eateries.length !== 1 ? "s" : ""} found within{" "}
-                {radius < 1000 ? `${radius} m` : `${radius / 1000} km`}
+                {eateries.length} place{eateries.length !== 1 ? "s" : ""} found
+                within {radius < 1000 ? `${radius} m` : `${radius / 1000} km`}
               </p>
             )}
           </div>
@@ -323,7 +335,11 @@ export default function FindEateries() {
           >
             {busy ? (
               <>
-                <Icon icon="ph:spinner-gap" className="animate-spin" width={16} />
+                <Icon
+                  icon="ph:spinner-gap"
+                  className="animate-spin"
+                  width={16}
+                />
                 {status === "locating" ? "Locating…" : "Fetching…"}
               </>
             ) : (
@@ -345,7 +361,9 @@ export default function FindEateries() {
           />
 
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+            initial={
+              prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }
+            }
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
             className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-border bg-card shadow-[0_0_0_6px_hsl(var(--primary)/0.08)]"
@@ -354,7 +372,9 @@ export default function FindEateries() {
           </motion.div>
 
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            initial={
+              prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }
+            }
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="relative"
@@ -365,12 +385,15 @@ export default function FindEateries() {
               <span className="text-primary">around you.</span>
             </h2>
             <p className="mt-4 text-muted-foreground max-w-xs mx-auto text-sm">
-              Discover restaurants, cafés, bars, and more within walking distance — powered by OpenStreetMap.
+              Discover restaurants, cafés, bars, and more within walking
+              distance — powered by OpenStreetMap.
             </p>
           </motion.div>
 
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            initial={
+              prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }
+            }
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="relative flex flex-col items-center gap-3"
@@ -410,9 +433,15 @@ export default function FindEateries() {
             className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
             aria-hidden
           />
-          <Icon icon="ph:spinner-gap" className="text-primary animate-spin relative" width={52} />
+          <Icon
+            icon="ph:spinner-gap"
+            className="text-primary animate-spin relative"
+            width={52}
+          />
           <p className="font-heading text-lg relative">
-            {status === "locating" ? "Getting your location…" : "Fetching nearby eateries…"}
+            {status === "locating"
+              ? "Getting your location…"
+              : "Fetching nearby eateries…"}
           </p>
           <p className="text-xs text-muted-foreground relative">
             {status === "locating"
@@ -426,11 +455,19 @@ export default function FindEateries() {
       {status === "error" && (
         <div className="flex flex-col items-center justify-center min-h-[66vh] gap-6 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card">
-            <Icon icon="ph:warning-circle" className="text-primary" width={32} />
+            <Icon
+              icon="ph:warning-circle"
+              className="text-primary"
+              width={32}
+            />
           </div>
           <div>
-            <p className="font-heading text-xl font-semibold">Couldn't find eateries</p>
-            <p className="mt-2 text-sm text-muted-foreground max-w-xs">{errorMsg}</p>
+            <p className="font-heading text-xl font-semibold">
+              Couldn't find eateries
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground max-w-xs">
+              {errorMsg}
+            </p>
           </div>
           <button
             onClick={() => setStatus("idle")}
@@ -458,7 +495,9 @@ export default function FindEateries() {
                     : "border-border bg-card text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {t === "all" ? `All (${eateries.length})` : (TYPE_LABELS[t] ?? t)}
+                {t === "all"
+                  ? `All (${eateries.length})`
+                  : (TYPE_LABELS[t] ?? t)}
               </button>
             ))}
 
@@ -486,9 +525,17 @@ export default function FindEateries() {
           {/* Cards grid */}
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-28 gap-4 text-center">
-              <Icon icon="ph:magnifying-glass" className="text-muted-foreground" width={40} />
+              <Icon
+                icon="ph:magnifying-glass"
+                className="text-muted-foreground"
+                width={40}
+              />
               <p className="text-muted-foreground text-sm">
-                No {filter !== "all" ? (TYPE_LABELS[filter] ?? filter).toLowerCase() + "s" : "eateries"} found in this radius.
+                No{" "}
+                {filter !== "all"
+                  ? (TYPE_LABELS[filter] ?? filter).toLowerCase() + "s"
+                  : "eateries"}{" "}
+                found in this radius.
               </p>
             </div>
           ) : (
@@ -496,7 +543,11 @@ export default function FindEateries() {
               {filtered.map((e, i) => (
                 <motion.div
                   key={e.id}
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+                  initial={
+                    prefersReducedMotion
+                      ? { opacity: 0 }
+                      : { opacity: 0, y: 24 }
+                  }
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.4) }}
                 >

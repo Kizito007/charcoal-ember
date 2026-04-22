@@ -9,17 +9,33 @@ export default function CuisinePage() {
   const prefersReducedMotion = useReducedMotion();
 
   const sectionFade = prefersReducedMotion
-    ? { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true }, transition: { duration: 0.3 } }
-    : { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5, ease: "easeOut" } };
+    ? {
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
+        transition: { duration: 0.3 },
+      }
+    : {
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, ease: "easeOut" },
+      };
 
   if (!cuisine) {
     return (
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-60px)] px-4 text-center gap-4">
-        <Icon icon="ph:fork-knife" width={48} className="text-muted-foreground" />
-        <h1 className="font-heading text-2xl font-semibold">Cuisine not found</h1>
+        <Icon
+          icon="ph:fork-knife"
+          width={48}
+          className="text-muted-foreground"
+        />
+        <h1 className="font-heading text-2xl font-semibold">
+          Cuisine not found
+        </h1>
         <p className="text-muted-foreground text-sm max-w-xs">
-          We couldn't find a cuisine matching that name. Head back to explore all
-          our world cuisines.
+          We couldn't find a cuisine matching that name. Head back to explore
+          all our world cuisines.
         </p>
         <Link
           to="/explore"
@@ -78,7 +94,12 @@ export default function CuisinePage() {
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {cuisine.dishes.map((dish: Dish, i: number) => (
-              <DishCard key={dish.name} dish={dish} index={i} reduced={!!prefersReducedMotion} />
+              <DishCard
+                key={dish.name}
+                dish={dish}
+                index={i}
+                reduced={!!prefersReducedMotion}
+              />
             ))}
           </div>
         </div>
