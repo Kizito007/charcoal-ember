@@ -22,7 +22,7 @@ export default function Navbar() {
           className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground hover:text-primary transition-colors"
         >
           <Icon icon="ph:fire-simple" className="text-primary" width={20} />
-          Eat Me
+          Eat Near
         </Link>
 
         {/* Desktop nav */}

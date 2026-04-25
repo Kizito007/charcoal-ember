@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 type Eatery = {
   id: number;
+  placeId: string;
   name: string;
   type: string;
   cuisine?: string;
@@ -17,6 +18,32 @@ type Eatery = {
 };
 
 type Status = "idle" | "locating" | "fetching" | "done" | "error";
+
+type GooglePlace = {
+  id: string;
+  displayName?: { text: string };
+  primaryType?: string;
+  location: { latitude: number; longitude: number };
+  formattedAddress?: string;
+  currentOpeningHours?: { openNow?: boolean };
+};
+
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+
+function mapPlaceType(googleType: string): string {
+  const typeMap: Record<string, string> = {
+    restaurant: "restaurant",
+    cafe: "cafe",
+    coffee_shop: "cafe",
+    bar: "bar",
+    pub: "pub",
+    fast_food_restaurant: "fast_food",
+    food_court: "food_court",
+    meal_takeaway: "fast_food",
+    meal_delivery: "fast_food",
+  };
+  return typeMap[googleType] ?? "restaurant";
+}
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -116,7 +143,7 @@ function getPhotoUrl(eatery: Eatery) {
 function EateryCard({ eatery }: { eatery: Eatery }) {
   const [imgError, setImgError] = useState(false);
   const icon = TYPE_ICONS[eatery.type] ?? "ph:fork-knife";
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${eatery.lat},${eatery.lon}`;
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(eatery.name)}&query_place_id=${eatery.placeId}`;
 
   return (
     <a
@@ -238,68 +265,83 @@ export default function FindEateries() {
     setStatus("fetching");
 
     try {
-      const amenities = "restaurant|cafe|fast_food|bar|pub|food_court";
-      const query = `[out:json][timeout:25];(node["amenity"~"${amenities}"](around:${r},${lat},${lon});way["amenity"~"${amenities}"](around:${r},${lat},${lon}););out body;>;out skel qt;`;
+      const res = await fetch(
+        "https://places.googleapis.com/v1/places:searchNearby",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": API_KEY,
+            "X-Goog-FieldMask":
+              "places.id,places.displayName,places.primaryType,places.location,places.formattedAddress,places.currentOpeningHours",
+          },
+          body: JSON.stringify({
+            includedTypes: [
+              "restaurant",
+              "cafe",
+              "bar",
+              "pub",
+              "fast_food_restaurant",
+              "food_court",
+            ],
+            maxResultCount: 20,
+            locationRestriction: {
+              circle: {
+                center: { latitude: lat, longitude: lon },
+                radius: r,
+              },
+            },
+          }),
+        },
+      );
 
-      const res = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        body: query,
-      });
-
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-
-      const data = await res.json();
-      const seen = new Set<string>();
-      const results: Eatery[] = [];
-
-      for (const el of data.elements as {
-        id: number;
-        lat?: number;
-        lon?: number;
-        center?: { lat: number; lon: number };
-        tags?: Record<string, string>;
-      }[]) {
-        const tags = el.tags ?? {};
-        const name = tags["name"];
-        if (!name) continue;
-
-        const elLat = el.lat ?? el.center?.lat;
-        const elLon = el.lon ?? el.center?.lon;
-        if (elLat == null || elLon == null) continue;
-
-        const key = `${name}|${elLat.toFixed(5)}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-
-        const rawCuisine = tags["cuisine"];
-        const cuisine = rawCuisine
-          ? rawCuisine.split(";")[0].replace(/_/g, " ")
-          : undefined;
-
-        const addrParts = [
-          tags["addr:housenumber"],
-          tags["addr:street"],
-        ].filter(Boolean);
-
-        results.push({
-          id: el.id,
-          name,
-          type: tags["amenity"] ?? "restaurant",
-          cuisine,
-          lat: elLat,
-          lon: elLon,
-          distance: haversine(lat, lon, elLat, elLon),
-          address: addrParts.length ? addrParts.join(" ") : undefined,
-          opening_hours: tags["opening_hours"],
-        });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        const msg =
+          (errData as { error?: { message?: string } }).error?.message ??
+          `API error ${res.status}`;
+        throw new Error(msg);
       }
+
+      const data = (await res.json()) as { places?: GooglePlace[] };
+      const places = data.places ?? [];
+
+      const results: Eatery[] = places.map((place, idx) => ({
+        id: idx,
+        placeId: place.id,
+        name: place.displayName?.text ?? "Unknown",
+        type: mapPlaceType(place.primaryType ?? "restaurant"),
+        lat: place.location.latitude,
+        lon: place.location.longitude,
+        distance: haversine(
+          lat,
+          lon,
+          place.location.latitude,
+          place.location.longitude,
+        ),
+        address: place.formattedAddress,
+        opening_hours:
+          place.currentOpeningHours?.openNow != null
+            ? place.currentOpeningHours.openNow
+              ? "Open now"
+              : "Closed"
+            : undefined,
+      }));
 
       results.sort((a, b) => a.distance - b.distance);
       setEateries(results);
       setFilter("all");
       setStatus("done");
-    } catch {
-      setErrorMsg("Failed to fetch nearby eateries. Please try again.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setErrorMsg(
+        msg.toLowerCase().includes("key") ||
+          msg.includes("401") ||
+          msg.includes("403") ||
+          msg.includes("REQUEST_DENIED")
+          ? "Invalid API key. Check your Google Maps API key and ensure the Places API (New) is enabled."
+          : "Failed to fetch nearby eateries. Please try again.",
+      );
       setStatus("error");
     }
   }
@@ -328,27 +370,29 @@ export default function FindEateries() {
               </p>
             )}
           </div>
-          <button
-            onClick={() => findEateries(radius)}
-            disabled={busy}
-            className="inline-flex items-center justify-center gap-2 h-10 px-5 text-sm font-medium rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            {busy ? (
-              <>
-                <Icon
-                  icon="ph:spinner-gap"
-                  className="animate-spin"
-                  width={16}
-                />
-                {status === "locating" ? "Locating…" : "Fetching…"}
-              </>
-            ) : (
-              <>
-                <Icon icon="ph:crosshair" width={16} />
-                {status === "done" ? "Search again" : "Find near me"}
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => findEateries(radius)}
+              disabled={busy}
+              className="inline-flex items-center justify-center gap-2 h-10 px-5 text-sm font-medium rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {busy ? (
+                <>
+                  <Icon
+                    icon="ph:spinner-gap"
+                    className="animate-spin"
+                    width={16}
+                  />
+                  {status === "locating" ? "Locating…" : "Fetching…"}
+                </>
+              ) : (
+                <>
+                  <Icon icon="ph:crosshair" width={16} />
+                  {status === "done" ? "Search again" : "Find near me"}
+                </>
+              )}
+            </button>
+          </div>
         </div>
       )}
 
@@ -386,7 +430,7 @@ export default function FindEateries() {
             </h2>
             <p className="mt-4 text-muted-foreground max-w-xs mx-auto text-sm">
               Discover restaurants, cafés, bars, and more within walking
-              distance — powered by OpenStreetMap.
+              distance — powered by Google Maps.
             </p>
           </motion.div>
 
@@ -446,7 +490,7 @@ export default function FindEateries() {
           <p className="text-xs text-muted-foreground relative">
             {status === "locating"
               ? "Please allow location access when prompted."
-              : "Querying OpenStreetMap data…"}
+              : "Querying Google Maps…"}
           </p>
         </div>
       )}
